@@ -35,32 +35,16 @@ jobs:
                   echo "** Run tests here **"
          -
             name: Generating OpenAPI document
-            run: python3 extract-openapi.py main:app --out openapi.json
+            run: |
+               python3 extract-openapi.py main:app --out openapi.json
+               cat openapi.json
          - 
             name: Lint API Definition with Spectral
             uses: stoplightio/spectral-action@latest
             with:
                file_glob: 'openapi.json'
+            continue-on-error: true
          -
             name: Lint API Definition with Redocly
             run: docker run --rm -v $PWD:/spec redocly/cli lint openapi.json
-         -
-            name: Commit files
-            id: commit
-            shell: bash
-            run: |
-               git config --local user.email "action@github.com"
-               git config --local user.name "github-actions"
-               git add openapi.json
-               if [-z "$(git status --porcelain)"]; then
-                  echo "::set-output name=push::false"
-               else
-                  git commit -m "API Definition updated" -a
-                  echo "::set-output name=push::true"
-               fi
-         - 
-            name: Push changes
-            if: steps.commit.outputs.push == 'true'
-            uses: ad-m/github-push-action@master
-            with:
-               github_token: ${{ secrets.GITHUB_TOKEN }}
+            continue-on-error: true

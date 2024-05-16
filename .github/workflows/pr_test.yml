@@ -39,4 +39,4 @@ jobs:
                   echo "** Run tests here **"
          -
             name: Lint API Definition with Redocly
-            run: docker run --rm -v $PWD:/spec redocly/cli lint openapi_schema.json --config openapi_rules.yaml
+            run: docker run --rm -v $PWD:/spec redocly/cli lint openapi_schema.json --config openapi_rules.yaml --format=github-actions

@@ -21,7 +21,7 @@ jobs:
          pull-requests: write
       steps:
          - 
-            name: Add hosts to /etc/hosts
+            name: Setup Host Environment
             run: |
               sudo echo "${{ secrets.TYK_DASHBOARD_URL }} tyk-dashboard.org" | sudo tee -a /etc/hosts 
          -

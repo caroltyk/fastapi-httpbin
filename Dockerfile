@@ -13,6 +13,7 @@ COPY bin/entrypoint.sh /
 
 COPY main.py /app
 COPY pytest.sh /app
+COPY openapi_schema.json /app
 COPY lib/ /app/lib/
 COPY tests/ /app/tests/
 COPY private/ /app/private/

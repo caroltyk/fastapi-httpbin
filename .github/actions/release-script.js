@@ -1,4 +1,5 @@
-import { Octokit } from "@octokit/action";
+//import { Octokit } from "@octokit/action";
+const { Octokit } = require("@octokit/action");
 
 const octokit = new Octokit();
 
@@ -7,7 +8,8 @@ const response = await octokit.request('POST /repos/caroltyk/tyk-apiops-demo/dis
     repo: context.repo.repo,
     event_type: 'trigger',
     client_payload: {
-    key: 'value'  // Payload data if needed
+        key: 'value'  // Payload data if needed
     }
 });
-console.log(response.status);
+
+console.log("dispatch status", response.status);

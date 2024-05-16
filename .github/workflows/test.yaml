@@ -1,0 +1,37 @@
+name: CI and release
+
+on:
+   workflow_dispatch: 
+
+jobs:
+   test-trigger:
+      runs-on: ubuntu-latest
+      permissions:
+         contents: write
+         packages: write
+         pull-requests: write
+      steps:
+         - 
+            name: Add hosts to /etc/hosts
+            run: |
+              sudo echo "${{ secrets.TYK_DASHBOARD_URL }} tyk-dashboard.org" | sudo tee -a /etc/hosts 
+         -
+            name: Checkout
+            uses: actions/checkout@v4
+         -
+            name: Trigger release workflow
+            uses: actions/github-script@v4
+            with:
+               github-token: ${{ secrets.GITHUB_TOKEN }}
+               script: |
+                  const response = await octokit.request('POST /repos/caroltyk/tyk-apiops-demo/dispatches', {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  event_type: 'trigger',
+                  client_payload: {
+                     api: registry-1.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/apis:fastapi-httpbin-${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
+                     image: ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-httpbin
+                     tags: ${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
+                  }
+                  });
+                  console.log(response.status);

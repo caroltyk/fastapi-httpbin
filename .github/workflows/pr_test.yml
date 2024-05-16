@@ -36,7 +36,7 @@ jobs:
          -
             name: Generating OpenAPI document
             run: |
-               python3 extract-openapi.py main:app --out openapi.json
+               python3 extract-openapi.py main:app --out temp_openapi.json
                cat temp_openapi.json
          - 
             name: Lint API Definition with Spectral

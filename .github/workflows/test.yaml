@@ -18,12 +18,12 @@ jobs:
             name: Checkout
             uses: actions/checkout@v4
 
-         -  
-            name: Trigger workflow
-            uses: octokit/action@v2
+         -
+            uses: octokit/request-action@v2.x
+            id: workflow_dispatch_action
             with:
-               action: workflow_dispatch
-               workflow: trigger
-               repo: caroltyk/tyk-apiops-demo
-               inputs: |
-                  payload: '{"key": "value"}'
+               route: POST /repos/caroltyk/tyk-apiops-demo/workflows/trigger/dispatch
+            env:
+               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         -
+            run: "echo latest release: '${{ steps.workflow_dispatch_action.outputs.data }}'"

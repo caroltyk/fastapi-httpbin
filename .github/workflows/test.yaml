@@ -36,6 +36,9 @@ jobs:
 
                   const octokit = new Octokit({
                      auth: process.env.GITHUB_TOKEN,
+                     request: {
+                        fetch: global.fetch
+                      }
                   });
 
                   const response = await octokit.request('POST /repos/caroltyk/tyk-apiops-demo/dispatches', {

@@ -1,4 +1,4 @@
-name: CI and release
+name: Test workflow trigger
 
 on:
    workflow_dispatch: 
@@ -7,9 +7,8 @@ jobs:
    test-trigger:
       runs-on: ubuntu-latest
       permissions:
-         contents: write
-         packages: write
-         pull-requests: write
+         contents: read
+         actions: write
       steps:
          - 
             name: Add hosts to /etc/hosts
@@ -25,13 +24,11 @@ jobs:
                github-token: ${{ secrets.GITHUB_TOKEN }}
                script: |
                   const response = await octokit.request('POST /repos/caroltyk/tyk-apiops-demo/dispatches', {
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  event_type: 'trigger',
-                  client_payload: {
-                     api: registry-1.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/apis:fastapi-httpbin-${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
-                     image: ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-httpbin
-                     tags: ${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
+                     owner: context.repo.owner,
+                     repo: context.repo.repo,
+                     event_type: 'trigger',
+                     client_payload: {
+                        key: 'value'  // Payload data if needed
                   }
                   });
                   console.log(response.status);

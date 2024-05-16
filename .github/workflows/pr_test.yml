@@ -37,14 +37,14 @@ jobs:
             name: Generating OpenAPI document
             run: |
                python3 extract-openapi.py main:app --out openapi.json
-               cat openapi.json
+               cat temp_openapi.json
          - 
             name: Lint API Definition with Spectral
-            uses: stoplightio/spectral-action@latest
+            uses: stoplightio/spectral-action@v0.8.11
             with:
-               file_glob: 'openapi.json'
+               file_glob: 'temp_openapi.json'
             continue-on-error: true
          -
             name: Lint API Definition with Redocly
-            run: docker run --rm -v $PWD:/spec redocly/cli lint openapi.json
+            run: docker run --rm -v $PWD:/spec redocly/cli lint temp_openapi.json
             continue-on-error: true

@@ -17,18 +17,33 @@ jobs:
          -
             name: Checkout
             uses: actions/checkout@v4
+         - 
+            name: Use Node.js
+            uses: actions/setup-node@v3
+            with:
+               node-version: '14'
+   
+         -
+            name: Install octokit/rest.js
+            run: npm install @octokit/rest
          -
             name: Trigger release workflow
             uses: actions/github-script@v4
             with:
                github-token: ${{ secrets.GITHUB_TOKEN }}
                script: |
+                  const { Octokit } = require("@octokit/rest");
+
+                  const octokit = new Octokit({
+                     auth: process.env.GITHUB_TOKEN,
+                  });
+
                   const response = await octokit.request('POST /repos/caroltyk/tyk-apiops-demo/dispatches', {
                      owner: context.repo.owner,
                      repo: context.repo.repo,
                      event_type: 'trigger',
                      client_payload: {
                         key: 'value'  // Payload data if needed
-                  }
+                     }
                   });
                   console.log(response.status);

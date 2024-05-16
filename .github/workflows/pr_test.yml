@@ -56,8 +56,8 @@ jobs:
          -
             name: Generating OpenAPI document
             run: |
-               python3 extract-openapi.py main:app --out temp_openapi.json
-               cat temp_openapi.json
+               python3 extract-openapi.py main:app --out openapi.json
+               cat openapi.json
          -
             name: Lint API Definition with Redocly
-            run: docker run --rm -v $PWD:/spec redocly/cli lint temp_openapi.json
+            run: docker run --rm -v $PWD:/spec redocly/cli lint openapi.json --config openapi_rules.yaml

@@ -1,4 +1,4 @@
-name: Run tests on PRs
+name: Test and Lint PR
 
 on:
    pull_request:

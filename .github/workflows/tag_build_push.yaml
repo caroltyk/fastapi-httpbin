@@ -1,4 +1,4 @@
-name: Release
+name: Build and Push Tags
 
 on:
    workflow_call:
@@ -19,11 +19,9 @@ jobs:
          contents: write
          packages: write
          pull-requests: write
+      env:
+         apiName: fastapi-httpbin
       steps:
-         - 
-            name: Setup Host Environment
-            run: |
-              sudo echo "${{ secrets.TYK_DASHBOARD_URL }} tyk-dashboard.org" | sudo tee -a /etc/hosts 
          -
             name: Checkout
             uses: actions/checkout@v4
@@ -38,7 +36,7 @@ jobs:
             id: meta
             uses: docker/metadata-action@v5
             with:
-               images: ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-httpbin
+               images: ${{ secrets.DOCKERHUB_USERNAME }}/$apiName
          -
             name: Login to Docker Hub
             uses: docker/login-action@v3
@@ -58,28 +56,4 @@ jobs:
             uses: oras-project/setup-oras@v1
          -
             name: Push the API Definition to OCI
-            run: oras push registry-1.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/apis:fastapi-httpbin-${{ env.DOCKER_METADATA_OUTPUT_VERSION }} openapi_schema.json:application/json
-   release:
-      name: Release
-      runs-on: ubuntu-latest
-      needs: 
-         - test
-         - build-push
-      steps:
-         -
-            name: Trigger release workflow
-            uses: actions/github-script@v4
-            with:
-              github-token: ${{ secrets.GITHUB_TOKEN }}
-              script: |
-                const response = await octokit.request('POST /repos/caroltyk/tyk-apiops-demo/dispatches', {
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  event_type: 'trigger',
-                  client_payload: {
-                    api: registry-1.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/apis:fastapi-httpbin-${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
-                    image: ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-httpbin
-                    tags: ${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
-                  }
-                });
-                console.log(response.status);
+            run: oras push registry-1.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/apis:$apiName-${{ env.DOCKER_METADATA_OUTPUT_VERSION }} openapi_schema.json:application/json

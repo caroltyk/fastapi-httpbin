@@ -18,28 +18,12 @@ jobs:
             name: Checkout
             uses: actions/checkout@v4
 
-         # Install Node 20
-         - 
-            uses: actions/setup-node@v4
+         -  
+            name: Trigger workflow
+            uses: octokit/action@v2
             with:
-               node-version: 20
-         -
-            run: npm install @octokit/action
-         
-         # Node.js script can be anywhere. A good convention is to put local GitHub Actions
-         # into the `.github/actions` folder
-         -  run: |
-               const { Octokit } = require("@octokit/action");
-               const octokit = new Octokit();
-               const response = await octokit.request('POST /repos/caroltyk/tyk-apiops-demo/dispatches', {
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  event_type: 'trigger',
-                  client_payload: {
-                     key: 'value'  // Payload data if needed
-                  }
-               });
-               
-               console.log("dispatch status", response.status);
-            env:
-               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+               action: workflow_dispatch
+               workflow: trigger
+               repo: caroltyk/tyk-apiops-demo
+               inputs: |
+                  payload: '{"key": "value"}'

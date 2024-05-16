@@ -56,4 +56,4 @@ jobs:
             uses: oras-project/setup-oras@v1
          -
             name: Push the API Definition to OCI
-            run: oras push registry-1.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/apis:${{ env.apiName }}-${{ env.DOCKER_METADATA_OUTPUT_VERSION }} openapi_schema.json:application/json
+            run: oras push registry-1.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.apiName }}:openapi_schema-${{ env.DOCKER_METADATA_OUTPUT_VERSION }} openapi_schema.json:application/json

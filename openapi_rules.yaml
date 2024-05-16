@@ -1,0 +1,18 @@
+apis:
+  main:
+    root: ./openapi_schema.json
+rules: 
+  no-ambiguous-paths: warn
+  no-enum-type-mismatch: error
+  no-example-value-and-externalValue: warn
+  no-identical-paths: error
+  no-invalid-media-type-examples: warn
+  no-invalid-parameter-examples: warn
+  no-invalid-schema-examples: warn
+  no-path-trailing-slash: error
+  no-required-schema-properties-undefined: error
+  no-unresolved-refs: error
+  no-unused-components: warn
+  operation-2xx-response: error
+  operation-4xx-response: warn
+  operation-description: warn

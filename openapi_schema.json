@@ -12,6 +12,7 @@
     "/get" : {
       "get" : {
         "tags" : [ "HTTP Methods" ],
+        "description": "The request's GET parameters.",
         "summary" : "The request's GET parameters.",
         "operationId" : "get_get_get",
         "responses" : {

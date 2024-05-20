@@ -36,5 +36,23 @@
   "tags" : [ {
     "name" : "HTTP Methods",
     "description" : "Testing different HTTP verbs."
-  } ]
+  } ],
+  "x-tyk-api-gateway": {
+    "info": {
+      "name": "FastAPI Httpbin",
+      "orgId": "663cd55e4d43eb0001d8315f",
+      "state": {
+        "active": true
+      }
+    },
+    "server": {
+      "listenPath": {
+        "strip": true,
+        "value": "<<AUTO REPLACE LISTENPATH>>"
+      }
+    },
+    "upstream": {
+      "url": "<<AUTO REPLACE TARGETURL>>"
+    }
+  }
 }

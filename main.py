@@ -36,7 +36,7 @@ app = FastAPI(docs_url = "/", redoc_url = None,
     )
 
 app.openapi_version = '3.0.2'
-app.openapi_url = './openapi.json'
+app.openapi_url = '/oas-httpbin/openapi.json'
 
 # Assuming your JSON file is named 'schema.json'
 json_file_path = './openapi_schema.json'

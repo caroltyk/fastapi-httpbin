@@ -63,6 +63,7 @@ except json.JSONDecodeError as e:
 # Ordering of these in the Swagger docs is set in lib/fastapi.py
 #
 app.include_router(methods.router, tags = ["HTTP Methods"])
+app.include_router(status.router, tags = ["Status Codes"])
 
 #
 # Load some static resources
